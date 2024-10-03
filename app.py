@@ -3,6 +3,15 @@ import numpy as np
 
 app = Flask(__name__)
 
+server_name = app.config['SERVER_NAME']
+if server_name and ':' in server_name:
+    host, port = server_name.split(":")
+    port = int(port)
+else:
+    port = 5000
+    host = "localhost"
+app.run(host=host, port=port)
+
 # Página principal
 @app.route('/', methods=['GET', 'POST'])
 def index():
