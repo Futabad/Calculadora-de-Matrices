@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!-- Proyecto de Algebra Lineal - Ingeniería Mecatrónica - Universidad Santo Tomas Villavicencio - Sebastían Romero, Daniel Vanegas, David Solis - 2024 -->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cualculadora de operaciones matriciales">
+    <title>Calculadora de Matrices</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>Calculadora de Matrices</h1>
+    
+    <form action="/" method="POST">
+        <!-- Seleccionar filas y columnas -->
+        <label for="rows" style="font-weight: bold; font-size: 12pt;">Número de filas:</label>
+        <input type="number" name="rows" min="2" value="2" required>
+    </br>
+        <label for="cols" style="font-weight: bold; font-size: 12pt;">Número de columnas:</label>
+        <input type="number" name="cols" min="2" value="2" required>
+
+        <button id="boton12" type="submit">Configurar Matrices</button>
+    </form>
+
+    <!-- Solo muestra el formulario de matrices si filas y columnas están configuradas -->
+    {% if rows and cols %}
+    <form action="/calculate" method="POST">
+        <input type="hidden" name="rows" value="{{ rows }}">
+        <input type="hidden" name="cols" value="{{ cols }}">
+        
+    
+        <div style="margin-top: 25px; margin-bottom: 25px;">
+            <label style="margin-top: 20px; margin-bottom: 20px;">Matriz 1:</label><br>
+            {% for i in range(rows) %}
+                {% for j in range(cols) %}
+                    <input type="number" name="matrix1_{{ i }}_{{ j }}" step="any" required>
+                {% endfor %}
+                <br>
+            {% endfor %}
+        </div>
+        <div>
+            <label style="margin-top: 20px; margin-bottom: 20px;">Matriz 2:</label><br>
+            {% for i in range(rows) %}
+                {% for j in range(cols) %}
+                    <input type="number" name="matrix2_{{ i }}_{{ j }}" step="any" required>
+                {% endfor %}
+                <br>
+            {% endfor %}
+        </div>
+        <div class="esp">
+            <label><b>Seleccione operación:</b></label>
+            <select name="operation">
+                <option value="sum">Suma</option>
+                <option value="subtraction">Resta</option>
+                <option value="multiplication">Multiplicación</option>
+                <option value="determinant">Determinante (Solo para matrices cuadradas)</option>
+            </select>
+        </div>
+
+        
+
+        <button id="boton12" type="submit">Calcular</button>
+    </form>
+    {% endif %}
+
+    {% if result is not none %}
+        <h2>Resultado:</h2>
+        <pre>{{ result }}</pre>
+    {% endif %}
+</body>
+</html>
